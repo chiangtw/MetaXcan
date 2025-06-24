@@ -99,7 +99,7 @@ def load_gwas(source, gwas_format, strict=True, separator=None, skip_until_heade
     else:
         logging.info("Reading input gwas: %s", source)
         if separator is None or separator == "ANY_WHITESPACE":
-            separator = '\s+'
+            separator = r'\s+'
         d = pandas.read_table(source, separator)
 
     logging.info("Processing input gwas")

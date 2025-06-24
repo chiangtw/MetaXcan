@@ -25,7 +25,7 @@ def gwas_data_source(path, snps=None, snp_column_name=None, skip_until_header=No
         else:
             header = file.readline()
 
-        header_comps = header.strip().split(separator)
+        header_comps = header.strip().split(separator.encode().decode('unicode_escape'))
         s = {c:[] for c in header_comps}
         index = -1
         if snp_column_name:
@@ -38,14 +38,14 @@ def gwas_data_source(path, snps=None, snp_column_name=None, skip_until_header=No
             logging.info("The input GWAS has duplicated columns: %s, will only use the first one in each case", str(duplicated))
 
         if handle_empty_columns:
-            split_r = re.compile(separator) if separator is not None else re.compile("\s")
+            split_r = re.compile(separator) if separator is not None else re.compile(r"\s")
 
         for i,line in enumerate(file):
             if handle_empty_columns:
                 line = line.replace("\n", "")
                 comps = split_r.split(line)
             else:
-                comps = line.strip().split(separator)
+                comps = line.strip().split(separator.encode().decode('unicode_escape'))
 
             #Yeah, there are those kinds of files
             if not len(comps) == len(header_comps):
@@ -71,7 +71,7 @@ def gwas_data_source(path, snps=None, snp_column_name=None, skip_until_header=No
 
     return s
 
-non_en_number = re.compile("^[-\+]?[0-9]*,{1}[0-9]+([eE]{1}[-\+]?[0-9]+)?$")
+non_en_number = re.compile(r"^[-\+]?[0-9]*,{1}[0-9]+([eE]{1}[-\+]?[0-9]+)?$")
 def sanitize_component(c):
     if non_en_number.match(c): c = c.replace(",",".")
     if c == "": c = None
