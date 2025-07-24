@@ -1,5 +1,5 @@
 import numpy
-from numpy.core import (product, asarray, dot, transpose, multiply, newaxis, maximum)
+from numpy import prod, asarray, dot, transpose, multiply, newaxis, maximum
 
 def _rc(s, tolerance):
     cutoff = tolerance * maximum.reduce(s)
@@ -23,7 +23,7 @@ def _inv(a, cf, rcond, epsilon):
 
     def _assertNoEmpty2d(*arrays):
         for a in arrays:
-            if a.size == 0 and product(a.shape[-2:]) == 0:
+            if a.size == 0 and prod(a.shape[-2:]) == 0:
                 raise RuntimeError("Arrays cannot be empty")
 
     def _makearray(a):
